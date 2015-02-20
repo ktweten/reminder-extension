@@ -1,0 +1,101 @@
+<!doctype html>
+<html ng-csp>
+    <head>
+        <meta charset="utf-8">
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+      <link href="styles/angular-csp.css" rel="stylesheet">
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css styles/main.css -->
+        <link href="styles/main.css" rel="stylesheet">
+        <!-- endbuild -->
+    </head>
+    <body ng-app="reminderApp">
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <!-- endbower -->
+        <script src="scripts/lib/angular.min.js"></script>
+        <!-- endbuild -->
+
+        <div id="note-list" ng-controller="CardListController as listCtrl">
+          <div id="create-note" ng-controller="CreateCardController">
+            <div>
+              <input type="image" class="img-button" id="create-button" src="images/glyphicons-433-plus.png" ng-click="openCard()">
+            </div>
+            <div class="note-card" ng-show="active">
+              <img class="note-image" ng-src="{{favIcon}}"></br>
+              <label for="note-title">Title:</label>
+              <input id="note-title" type="text" ng-model="title">
+              </br>
+              <label for="note-url">Url:</label>
+              <input id="note-url" type="url" ng-model="url">
+              </br>
+              <label for="note-due">Due:</label>
+              <input id="note-due" type="date" ng-model="due">
+              </br>
+              <textarea class="notation-text" ng-model="notation"></textarea>
+              </br>
+              <input class="confirm-button img-button" type="image" src="images/glyphicons-207-ok-2.png" ng-click="submitCard()">
+              <input class="cancel-button img-button" type="image" src="images/glyphicons-208-remove-2.png" ng-click="initializeCard()">
+            </div>
+          </div>
+
+          <div id="cards">
+            <div class="note-card" ng-repeat="card in cards | orderBy : ['!due', 'due', 'created'] track by $index"
+                 ng-controller="EditCardController as editCtrl">
+              <div ng-hide="editCtrl.editing" ng-click="setTabTo(card.url)">
+                <div class="buttons">
+                  <input class="img-button" type="image" src="images/glyphicons-31-pencil.png"
+                         ng-click="editCtrl.openCard(card); $event.stopPropagation();">
+                  <input class="img-button" type="image" src="images/glyphicons-193-circle-remove.png"
+                         ng-click="delete(card); $event.stopPropagation();">
+                </div>
+                <div>
+                  <img class="favicon" ng-show="card.favIcon" ng-src="{{card.favIcon}}">
+                  <p class="note-link" >{{card.title}}</p>
+                </div>
+                <h3 ng-show="card.due">Due: {{card.due | date : format : fullDate}}</h3>
+                <div>
+                  <p ng-show="card.notation">{{card.notation}}</p>
+                </div>
+              </div>
+
+              <div ng-show="editCtrl.editing">
+                <span>
+                  <img class="favicon" ng-src="{{card.favIcon}}">
+                  <label for="edit-title">Title:</label>
+                  <input id="edit-title" type="text" ng-model="card.title">
+                </span>
+                </br>
+                <label for="edit-url">Url:</label>
+                <input id="edit-url" type="url" ng-model="card.url">
+                </br>
+                <label for="edit-due">Due:</label>
+                <input id="edit-due" type="date" ng-model="due">
+                </br>
+                <textarea class="notation-text" ng-model="card.notation"></textarea>
+                <input class="update-button img-button" type="image" src="images/glyphicons-207-ok-2.png" ng-click="editCtrl.updateCard(card, cards)">
+              </div>
+
+            </div>
+          </div>
+          <div id="attribution">
+            This extension uses
+            <a href="http://glyphicons.com/">Glyphicons</a>
+            in accordance with the
+            <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY 3.0 license</a>
+          </div>
+        </div>
+
+        <!-- build:js scripts/popup.js -->
+        <script src="scripts/popup.js"></script>
+        <script src="scripts/reminder-app.js"></script>
+        <script src="scripts/update-icon.js"></script>
+        <script src="scripts/services/cards-service.js"></script>
+        <script src="scripts/controllers/card-list-controller.js"></script>
+        <script src="scripts/controllers/create-card-controller.js"></script>
+        <script src="scripts/controllers/edit-card-controller.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Reminder",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "An extension for bookmarks with notes and deadlines.",
+    "description": "The description of the application"
+  }
+}
